@@ -13,7 +13,14 @@ const HomeScreen = (props: any) => {
           <Image source={Banner} resizeMode="contain" style={styles.banner} />
         </View>
         <View style={styles.sectionContainer}>
-          <Button onPress={() => navigate("BoardGame")} text={"New game"} />
+          <Button
+            onPress={() => navigate("BoardGame")}
+            text={"Human VS Human"}
+          />
+          <Button
+            onPress={() => navigate("BoardGame")}
+            text={"Human VS Computer"}
+          />
         </View>
       </SafeAreaView>
     </Background>
@@ -39,7 +46,7 @@ const styles = StyleSheet.create({
   },
   sectionContainer: {
     flex: 2,
-    marginHorizontal: 36,
+    marginHorizontal: 28,
   },
 });
 

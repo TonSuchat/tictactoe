@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
+import Constants from "expo-constants";
 
 const styles = StyleSheet.create({
   text: {
@@ -14,6 +15,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderBottomColor: "white",
     borderBottomWidth: 4,
+    marginTop: Constants.statusBarHeight,
   },
 });
 

@@ -19,6 +19,11 @@ const styles = StyleSheet.create({
     borderLeftWidth: 4,
     borderRightWidth: 4,
   },
+  touchable: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
 
 type SlotType = {
@@ -36,7 +41,10 @@ const Slot: React.FC<SlotType> = (props) => {
           : styles.tile
       }
     >
-      <TouchableOpacity onPress={() => props.onSlotPress()}>
+      <TouchableOpacity
+        style={styles.touchable}
+        onPress={() => props.onSlotPress()}
+      >
         <Text style={styles.text}>{props.text}</Text>
       </TouchableOpacity>
     </View>

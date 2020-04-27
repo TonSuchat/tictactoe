@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 36,
+    fontSize: 26,
     fontWeight: "800",
     color: "black",
     textAlign: "center",
@@ -12,6 +12,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#DDDDDD",
     padding: 10,
     borderRadius: 15,
+    margin: 10,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
