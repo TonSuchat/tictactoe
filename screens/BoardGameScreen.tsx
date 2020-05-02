@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import BackgroundComponent from "../components/Background";
 import Button from "../components/Button";
 import Tile from "../components/Tile";
 import Slot from "../components/Slot";
-import { winnerPatters, getInitialSlots } from "../utility";
-import { getPlayer } from "../logic";
+import { getInitialSlots } from "../utility";
+import { getPlayer, isTerminal, getWinner, getMove } from "../logic";
 
 const styles = StyleSheet.create({
   container: {
@@ -41,76 +41,67 @@ type BoardGameState = {
   slots: string[][];
   winner: string;
   isEnd: boolean;
+  mode: string;
+  turn: string;
 };
 
-const BoardGameScreen: React.FC = () => {
+type BoardGameScreenType = {
+  route: any;
+};
+
+const BoardGameScreen: React.FC<BoardGameScreenType> = (props) => {
   const getInitialState = () => {
     return {
       player: getPlayer(getInitialSlots()), // initial player will be 'X'
       slots: getInitialSlots(),
       winner: "",
       isEnd: false,
+      mode: mode || "human",
+      turn: "human",
     };
   };
 
   const [state, setState] = useState<BoardGameState>(getInitialState());
+  const { mode } = props.route.params;
+
+  useEffect(() => {
+    setState({ ...state, mode });
+  }, [mode]);
+
+  useEffect(() => {
+    const { mode, turn, isEnd, slots, player } = state;
+    if (mode === "ai" && turn === "ai" && !isEnd) {
+      // get move for ai
+      const move = getMove(state.slots);
+      slots[move[0]][move[1]] = player;
+      setState({
+        ...state,
+        player: player === "X" ? "O" : "X",
+        slots,
+        winner: getWinner(slots),
+        isEnd: isTerminal(slots),
+        turn: "human",
+      });
+    }
+  }, [state.turn]);
 
   const onResetPress = () => {
     setState({ ...getInitialState() });
   };
 
   const onSlotPress = (row: any, col: any) => {
-    const player = state.player;
+    const { player, mode, turn } = state;
     const slots = [...state.slots];
     slots[row][col] = player;
     // check if there's a winner
     setState({
+      ...state,
       player: player === "X" ? "O" : "X",
       slots,
-      winner: checkWinner(),
-      isEnd: checkGameIsEnded(),
+      winner: getWinner(slots),
+      isEnd: isTerminal(slots),
+      turn: mode === "ai" && turn === "human" ? "ai" : "human",
     });
-  };
-
-  const checkWinner = (): string => {
-    let winner = "";
-    const slots = state.slots;
-    winnerPatters.every((pattern) => {
-      pattern.every((item) => {
-        const child1 = item[0];
-        const child2 = item[1];
-        const child3 = item[2];
-        if (
-          slots[child1[0]][child1[1]] == slots[child2[0]][child2[1]] &&
-          slots[child1[0]][child1[1]] == slots[child3[0]][child3[1]]
-        ) {
-          winner = slots[child1[0]][child1[1]];
-          return false; // return false for break the loop
-        }
-        return true; // return true for keep iterate
-      });
-      if (winner) return false;
-      // return false for break the loop
-      else return true; // return true for keep iterate
-    });
-    return winner;
-  };
-
-  const checkGameIsEnded = () => {
-    const slots = [...state.slots];
-    let result = true;
-    slots.every((row) => {
-      row.every((col) => {
-        if (!col || col === undefined) {
-          result = false;
-          return false;
-        }
-        return true;
-      });
-      if (!result) return false;
-      else return true;
-    });
-    return result;
   };
 
   return (

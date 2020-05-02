@@ -178,5 +178,23 @@ describe("logic", () => {
       );
       expect(getMove(state)).toEqual([2, 1]);
     });
+
+    it("should get draw move rather than lose move", () => {
+      const state = placeSymbolInSlots(
+        ["O", "X", "O"],
+        ["X", "X", ""],
+        ["", "O", "X"]
+      );
+      expect(getMove(state)).toEqual([1, 2]);
+    });
+
+    it("should get winning move rather than draw move", () => {
+      const state = placeSymbolInSlots(
+        ["O", "X", "O"],
+        ["X", "O", "X"],
+        ["X", "", ""]
+      );
+      expect(getMove(state)).toEqual([2, 2]);
+    });
   });
 });

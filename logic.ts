@@ -1,4 +1,4 @@
-import { winnerPatters, placeSymbolInSlots } from "./utility";
+import { winnerPatters } from "./utility";
 
 export const countSymbol = (state: string[][], symbol: string): number => {
   return state.reduce(

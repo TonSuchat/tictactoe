@@ -14,11 +14,11 @@ const HomeScreen = (props: any) => {
         </View>
         <View style={styles.sectionContainer}>
           <Button
-            onPress={() => navigate("BoardGame")}
+            onPress={() => navigate("BoardGame", { mode: "human" })}
             text={"Human VS Human"}
           />
           <Button
-            onPress={() => navigate("BoardGame")}
+            onPress={() => navigate("BoardGame", { mode: "ai" })}
             text={"Human VS Computer"}
           />
         </View>
