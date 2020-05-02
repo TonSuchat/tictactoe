@@ -4,7 +4,8 @@ import BackgroundComponent from "../components/Background";
 import Button from "../components/Button";
 import Tile from "../components/Tile";
 import Slot from "../components/Slot";
-import { winnerPatters } from "../utility";
+import { winnerPatters, getInitialSlots } from "../utility";
+import { getPlayer } from "../logic";
 
 const styles = StyleSheet.create({
   container: {
@@ -37,23 +38,15 @@ const col = [...row];
 
 type BoardGameState = {
   player: string;
-  slots: any[][];
+  slots: string[][];
   winner: string;
   isEnd: boolean;
 };
 
 const BoardGameScreen: React.FC = () => {
-  const getInitialSlots = () => {
-    return [
-      [null, null, null],
-      [null, null, null],
-      [null, null, null],
-    ];
-  };
-
   const getInitialState = () => {
     return {
-      player: "X", // initial player will be 'X'
+      player: getPlayer(getInitialSlots()), // initial player will be 'X'
       slots: getInitialSlots(),
       winner: "",
       isEnd: false,
